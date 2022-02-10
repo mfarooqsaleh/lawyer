@@ -1,9 +1,7 @@
 /node_modules
 node_modules/
-/frontend/package.json/
+
 .env
 
-
-/package.json
 
 

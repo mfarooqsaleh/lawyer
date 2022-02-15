@@ -1,119 +1,91 @@
-import Posts from '../models/postModel.js';
+import Post from "../models/postModel.js";
+import asyncHandler from "express-async-handler";
 
-// Create and Save a new post
-const create = (req, res) => {
-    // Validate request
-    if(!req.body.content){
-        res.status(400).send({
-            message:"Please Add Content"
-        })
-    }
+// @desc    Get logged in user posts
+// @route   GET /api/posts
+// @access  Private
+const getPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find({ user: req.user._id });
+  res.json(posts);
+});
 
-    // Create a post
-    const posts = new Posts({
-        
-        title: req.body.title, 
-        content: req.body.content
-     
-    });
+//@description     Fetch single Post
+//@route           GET /api/posts/:id
+//@access          Public
+const getPostById = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
 
-    // Save post in the database
-    posts.save()
-    .then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the post."
-        });
-    });
-};
-const findAll = (req, res) => {
-    Posts.find().sort({"postId":1})
-    .then(posts => {
-        res.send(posts);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while retrieving posts."
-        });
-    });
-};
+  if (post) {
+    res.json(post);
+  } else {
+    res.status(404).json({ message: "Post not found" });
+  }
 
+  res.json(post);
+});
 
-const findOne = (req, res) => {
-    Posts.findById(req.params.postId)
-    .then(posts => {
-        if(!posts) {
-            return res.status(404).send({
-                message: "Note not found with id " + req.params.noteId
-            });            
-        }
-        res.send(posts);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "post not found with id " + req.params.postId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error retrieving post with id " + req.params.postId
-        });
-    });
-};
+//@description     Create single Post
+//@route           GET /api/posts/create
+//@access          Private
+const CreatePost = asyncHandler(async (req, res) => {
+  const { title, content } = req.body;
 
+  if (!title || !content) {
+    res.status(400);
+    throw new Error("Please Fill all the feilds");
+    return;
+  } else {
+    const post = new Post({ user: req.user._id, title, content});
 
+    const createdPost = await post.save();
 
-// Update a post identified by the postId in the request
-const update = (req, res) => {
-  
+    res.status(201).json(createdPost);
+  }
+});
 
-    // Find post and update it with the request body
-    Posts.findByIdAndUpdate(req.params.postId, {
-        title: req.body.title, 
-        content: req.body.content,
-      
+//@description     Delete single Post
+//@route           GET /api/posts/:id
+//@access          Private
+const DeletePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
 
-    }, {new: true})
-    .then(post => {
-        if(!post) {
-            return res.status(404).send({
-                message: "post not found with id " + req.params.postId
-            });
-        }
-        res.send(post);
-    }).catch(err => {
-        if(err.kind === 'ObjectId') {
-            return res.status(404).send({
-                message: "post not found with id " + req.params.postId
-            });                
-        }
-        return res.status(500).send({
-            message: "Error updating post with id " + req.params.postId
-        });
-    });
-};
+  if (post.user.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("You can't perform this action");
+  }
 
+  if (post) {
+    await post.remove();
+    res.json({ message: "Post Removed" });
+  } else {
+    res.status(404);
+    throw new Error("Post not Found");
+  }
+});
 
+// @desc    Update a post
+// @route   PUT /api/potes/:id
+// @access  Private
+const UpdatePost = asyncHandler(async (req, res) => {
+  const { title, content } = req.body;
 
-const del = (req, res) => {
-    Posts.findByIdAndRemove(req.params.postId)
-    .then(post => {
-        if(!post) {
-            return res.status(404).send({
-                message: "post not found with id " + req.params.postId
-            });
-        }
-        res.send({message: "post deleted successfully!"});
-    }).catch(err => {
-        if(err.kind === 'ObjectId' || err.name === 'NotFound') {
-            return res.status(404).send({
-                message: "post not found with id " + req.params.postId
-            });                
-        }
-        return res.status(500).send({
-            message: "Could not delete post with id " + req.params.postId
-        });
-    });
-};
+  const post = await Post.findById(req.params.id);
 
+  if (post.user.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("You can't perform this action");
+  }
 
-export{create,findAll,findOne,update,del};
+  if (post) {
+    post.title = title;
+    post.content = content;
+
+    const updatedPost = await post.save();
+    res.json(updatedPost);
+  } else {
+    res.status(404);
+    throw new Error("Post not found");
+  }
+});
+
+export { getPostById, getPosts, CreatePost, DeletePost,UpdatePost };

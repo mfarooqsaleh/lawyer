@@ -1,20 +1,20 @@
 import express from "express";
+import {
+  getPostById,
+  getPosts,
+  CreatePost,
+  DeletePost,
+  UpdatePost,
+} from "../controllers/postController.js";
 const router = express.Router();
-import {create,findAll, findOne,update,del} from '../controllers/postController.js';
+import { protect } from "../middleware/authMiddleware.js";
 
-// Create a new post
-router.route("/add").post(create);
-
-// Retrieve all post Sorted
-router.route("/findall").get(findAll);
-
-// Retrieve a single post with postId
-router.route("/findone/:postId").get(findOne);
-
-// Update a Note with postId
-router.route("/update/:postId").put(update);
-
-// Delete a Note with postId
-router.route("/del/:postId").delete(del);
+router.route("/").get(protect, getPosts);
+router
+  .route("/:id")
+  .get(getPostById)
+  .delete(protect, DeletePost)
+  .put(protect, UpdatePost);
+router.route("/create").post(protect, CreatePost);
 
 export default router;

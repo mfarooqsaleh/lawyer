@@ -1,30 +1,36 @@
-import React from 'react'
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
-import RegisterScreen from "./RegisterScreen/RegisterScreen.js";
+import "./App.css";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
+import Header from "./components/Header";
+import MyPosts from "./Screens/MyPosts/MyPosts";
 
-import LoginScreen from "./LoginScreen/LoginScreen.js";
-import Header from "./Header/Header.js";
-
-
-
+import LandingPage from "./Screens/LandingPage/LandingPage";
+import LoginScreen from "./Screens/LoginScreen/LoginScreen";
+import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
+import { useState } from "react";
 
 function App() {
+  const [search, setSearch] = useState("");
+
   return (
-    <div>
     <Router>
-    <Routes>
-      <Route exact path="/" element={<Header />} />
-      <Route path="/login" element={<LoginScreen />} />
-      <Route path="/register" element={<RegisterScreen />} />
-    </Routes>
+      <Header setSearch={(s) => setSearch(s)} />
+      <main className="App">
+        <Route path="/" component={LandingPage} exact />
+        <Route path="/login" component={LoginScreen} />
+        <Route path="/register" component={RegisterScreen} />
+        <Route
+          path="/myposts"
+          component={({ history }) => (
+            <MyPosts search={search} history={history} />
+          )}
+        />
 
 
-     </Router>
-     </div>
+        
+      </main>
+      <Footer />
+    </Router>
   );
 }
 

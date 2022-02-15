@@ -24,4 +24,3 @@ function Loading({ size = 100 }) {
 }
 
 export default Loading;
-  

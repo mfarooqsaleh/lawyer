@@ -3,13 +3,27 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import {
     userLoginReducer,
+    userRegisterReducer,
+    
     
   } from "./reducers/userReducer";
+  import {
+    postCreateReducer,
+    postDeleteReducer,
+    postListReducer,
+    postUpdateReducer,
+  } from "./reducers/postReducer";
+
 const reducer=combineReducers({
 
+postList: postListReducer,
+  
+  postCreate: postCreateReducer,
+  postDelete: postDeleteReducer,
+  postUpdate: postUpdateReducer,
 
-
-    userLogin: userLoginReducer
+    userLogin: userLoginReducer,
+    userRegister: userRegisterReducer,
 })
 
 const initialState={}

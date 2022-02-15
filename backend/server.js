@@ -5,7 +5,7 @@ import path from "path";
   import userRoutes from "./routes/userRoutes.js";
   import postRoutes from "./routes/postRoutes.js";
 
-import { errorHandler, notFound } from "./errorMiddleware.js";
+  import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app=express();
 dotenv.config();

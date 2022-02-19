@@ -95,7 +95,6 @@ function MyPosts({ history, search }) {
   <Accordion.Item eventKey="0"
    
   >
-     <img src={userInfo.pic} alt="BigCo Inc. logo"/>
     <Accordion.Header key={post.title}>{post.title}</Accordion.Header>
     <Accordion.Body>
     <ReactMarkdown key={post.content}>{post.content}</ReactMarkdown>

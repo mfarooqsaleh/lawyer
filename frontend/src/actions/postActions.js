@@ -11,6 +11,9 @@ import {
     POSTS_UPDATE_FAIL,
     POSTS_UPDATE_REQUEST,
     POSTS_UPDATE_SUCCESS,
+    FEEDS_LIST_REQUEST,
+    FEEDS_LIST_SUCCESS,
+    FEEDS_LIST_FAIL,
   } from "../constants/postConstants";
   import axios from "axios";
   
@@ -47,6 +50,52 @@ import {
       });
     }
   };
+
+  export const listFeeds = () => async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: FEEDS_LIST_REQUEST,
+      });
+  
+
+      
+      const {
+        userLogin: { userInfo },
+      } = getState();
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
+  
+      const { data } = await axios.get(`/api/posts/feed`, config);
+  
+      dispatch({
+        type: FEEDS_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      const message =
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message;
+      dispatch({
+        type: FEEDS_LIST_FAIL,
+        payload: message,
+      });
+    }
+  };
+
+
+
+
+
+
+
+
+
+
   
   export const createPostAction = (title, content) => async (
     dispatch,

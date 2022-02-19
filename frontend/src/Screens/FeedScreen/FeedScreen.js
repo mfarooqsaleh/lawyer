@@ -5,16 +5,16 @@ import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 
 import { useDispatch, useSelector } from "react-redux";
-import { deletePostAction, listPosts } from "../../actions/postActions";
+import {  listFeeds } from "../../actions/postActions";
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-import "./MyPosts.css";
+//import "./MyPosts.css";
 
-function MyPosts({ history, search }) {
+function MyFeeds({ history, search }) {
   const dispatch = useDispatch();
 
-  const postList = useSelector((state) => state.postList);
-  const { loading, error, posts } = postList;
+  const feedList = useSelector((state) => state.feedList);
+  const { loading, error, posts } = feedList;
 
   // const filteredposts = posts.filter((post) =>
   //   post.title.toLowerCase().includes(search.toLowerCase())
@@ -23,21 +23,11 @@ function MyPosts({ history, search }) {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const postDelete = useSelector((state) => state.postDelete);
-  const {
-    loading: loadingDelete,
-    error: errorDelete,
-    success: successDelete,
-  } = postDelete;
-
-  const postCreate = useSelector((state) => state.postCreate);
-  const { success: successCreate } = postCreate;
-
-  const postUpdate = useSelector((state) => state.postUpdate);
-  const { success: successUpdate } = postUpdate;
+  
+ 
 
   useEffect(() => {
-    dispatch(listPosts());
+    dispatch(listFeeds());
     if (!userInfo) {
       history.push("/");
     }
@@ -45,36 +35,17 @@ function MyPosts({ history, search }) {
     dispatch,
     history,
     userInfo,
-    successDelete,
-    successCreate,
-    successUpdate,
+  
   ]);
 
-  const deleteHandler = (id) => {
-    if (window.confirm("Are you sure?")) {
-      dispatch(deletePostAction(id));
-    }
-  };
+  
 
   return (
     <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
       {console.log(posts)}
-      <Link to="/createpost">
-        <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
-          Create new post
-        </Button>
-      </Link>
-      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-      {errorDelete && (
-        <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-      )}
-      {loading && <Loading />}
-      {loadingDelete && <Loading />}
+     
       {posts &&
         posts
-          .filter((filteredPost) =>
-            filteredPost.title.toLowerCase().includes(search.toLowerCase())
-          )
           .reverse()
           .map((post) => (
             <Accordion>
@@ -95,7 +66,8 @@ function MyPosts({ history, search }) {
   <Accordion.Item eventKey="0"
    
   >
-     <img src={userInfo.pic} alt="BigCo Inc. logo"/>
+
+
     <Accordion.Header key={post.title}>{post.title}</Accordion.Header>
     <Accordion.Body>
     <ReactMarkdown key={post.content}>{post.content}</ReactMarkdown>
@@ -103,16 +75,7 @@ function MyPosts({ history, search }) {
   </Accordion.Item>
 </Accordion>
 
-                  <div>
-                    <Button href={`/post/${post._id}`}>Edit</Button>
-                    <Button
-                      variant="danger"
-                      className="mx-2"
-                      onClick={() => deleteHandler(post._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
+                 
                 </Card.Header>
                 <Accordion.Collapse eventKey="0">
                   <Card.Body>
@@ -135,4 +98,4 @@ function MyPosts({ history, search }) {
   );
 }
 
-export default MyPosts;
+export default MyFeeds;

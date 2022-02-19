@@ -9,6 +9,11 @@ const getPosts = asyncHandler(async (req, res) => {
   res.json(posts);
 });
 
+const getAllPosts = asyncHandler(async (req, res) => {
+  const posts = await Post.find();
+  res.json(posts);
+});
+
 //@description     Fetch single Post
 //@route           GET /api/posts/:id
 //@access          Public
@@ -88,4 +93,4 @@ const UpdatePost = asyncHandler(async (req, res) => {
   }
 });
 
-export { getPostById, getPosts, CreatePost, DeletePost,UpdatePost };
+export { getPostById, getPosts,getAllPosts, CreatePost, DeletePost,UpdatePost };

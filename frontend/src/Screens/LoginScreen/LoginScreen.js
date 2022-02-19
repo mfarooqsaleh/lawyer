@@ -3,7 +3,6 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./LoginScreen.css";
-import Header from "../../Header/Header.js";
 import { login } from "../../actions/userActions";
 
 import Loading from "../../components/Loading";
@@ -11,8 +10,7 @@ import MainScreen from "../../components/MainScreen";
 
 import ErrorMessage from "../../components/ErrorMessage";
 
-const LoginScreen = ({ history }) => {
-
+function LoginScreen({ history }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,7 +21,7 @@ const LoginScreen = ({ history }) => {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/");
+      history.push("/myposts");
     }
   }, [history, userInfo]);
 

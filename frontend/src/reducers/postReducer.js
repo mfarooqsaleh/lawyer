@@ -11,6 +11,9 @@ import {
     POSTS_LIST_FAIL,
     POSTS_LIST_REQUEST,
     POSTS_LIST_SUCCESS,
+    FEEDS_LIST_REQUEST,
+    FEEDS_LIST_SUCCESS,
+    FEEDS_LIST_FAIL,
   } from "../constants/postConstants";
   
   export const postListReducer = (state = { posts: [] }, action) => {
@@ -20,6 +23,19 @@ import {
       case POSTS_LIST_SUCCESS:
         return { loading: false, posts: action.payload };
       case POSTS_LIST_FAIL:
+        return { loading: false, error: action.payload };
+  
+      default:
+        return state;
+    }
+  };
+  export const feedListReducer = (state = { feeds: [] }, action) => {
+    switch (action.type) {
+      case FEEDS_LIST_REQUEST:
+        return { loading: true };
+      case FEEDS_LIST_SUCCESS:
+        return { loading: false, posts: action.payload };
+      case FEEDS_LIST_FAIL:
         return { loading: false, error: action.payload };
   
       default:

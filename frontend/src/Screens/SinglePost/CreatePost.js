@@ -7,15 +7,50 @@ import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
 import ReactMarkdown from "react-markdown";
 
-function CreatePost({ history }) {
+function CreatePost({ location,history }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("");
+  const [pic, setPic] = useState(
+    "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+  );
+  const [picMessage, setPicMessage] = useState(null);
+
+
 
   const dispatch = useDispatch();
 
   const postCreate = useSelector((state) => state.postCreate);
   const { loading, error, post } = postCreate;
+
+  const postDetails = (pics) => {
+    if (
+      pics ===
+      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+    ) {
+      return setPicMessage("Please Select an Image");
+    }
+    setPicMessage(null);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData(); 
+      data.append("file", pics);
+      data.append("upload_preset", "smartleading");
+      data.append("cloud_name", "smartleading");
+      fetch("https://api.cloudinary.com/v1_1/smartleading/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setPicMessage("Please Select an Image");
+    }
+  };
 
   console.log(post);
 
@@ -23,12 +58,13 @@ function CreatePost({ history }) {
     setTitle("");
     setCategory("");
     setContent("");
+    setCategory("");
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e) => { 
     e.preventDefault();
-    dispatch(createPostAction(title, content, category));
-    if (!title || !content) return;
+    dispatch(createPostAction(title, content, category,pic));
+    if (!title || !content || !category) return;
 
     resetHandler();
     history.push("/myposts");
@@ -72,7 +108,7 @@ function CreatePost({ history }) {
               </Card>
             )}
 
-            <Form.Group controlId="content">
+<Form.Group controlId="content">
               <Form.Label>Category</Form.Label>
               <Form.Control
                 type="content"
@@ -80,6 +116,22 @@ function CreatePost({ history }) {
                 placeholder="Enter the Category"
                 onChange={(e) => setCategory(e.target.value)}
               />
+
+{picMessage && (
+            <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+          )}
+        <Form.Group controlId="pic">
+<Form.Label>Profile Picture</Form.Label>
+<input
+
+onChange={(e) => postDetails(e.target.files[0])}
+id="custom-file"
+type="file"
+label="Upload Post Picture"
+custom
+
+/>          
+</Form.Group>
             </Form.Group>
             {loading && <Loading size={50} />}
             <Button type="submit" variant="primary">

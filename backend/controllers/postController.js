@@ -5,12 +5,12 @@ import asyncHandler from "express-async-handler";
 // @route   GET /api/posts
 // @access  Private
 const getPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find({ user: req.user._id });
+  const posts = await Post.find({ user: req.user._id }).populate("user");
   res.json(posts);
 });
 
 const getAllPosts = asyncHandler(async (req, res) => {
-  const posts = await Post.find();
+  const posts = await Post.find().populate("user");
   res.json(posts);
 });
 
@@ -33,14 +33,14 @@ const getPostById = asyncHandler(async (req, res) => {
 //@route           GET /api/posts/create
 //@access          Private
 const CreatePost = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content,category,pic } = req.body;
 
   if (!title || !content) {
     res.status(400);
     throw new Error("Please Fill all the feilds");
     return;
   } else {
-    const post = new Post({ user: req.user._id, title, content});
+    const post = new Post({ user: req.user._id, title, content,category,pic});
 
     const createdPost = await post.save();
 
@@ -72,7 +72,7 @@ const DeletePost = asyncHandler(async (req, res) => {
 // @route   PUT /api/potes/:id
 // @access  Private
 const UpdatePost = asyncHandler(async (req, res) => {
-  const { title, content } = req.body;
+  const { title, content,category,pic } = req.body;
 
   const post = await Post.findById(req.params.id);
 
@@ -84,6 +84,8 @@ const UpdatePost = asyncHandler(async (req, res) => {
   if (post) {
     post.title = title;
     post.content = content;
+    post.category = category;
+    post.pic = pic;
 
     const updatedPost = await post.save();
     res.json(updatedPost);

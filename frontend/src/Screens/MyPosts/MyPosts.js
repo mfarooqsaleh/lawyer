@@ -59,6 +59,7 @@ function MyPosts({ history, search }) {
   return (
     <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
       {console.log(posts)}
+
       <Link to="/createpost">
         <Button style={{ marginLeft: 10, marginBottom: 6 }} size="lg">
           Create new post
@@ -80,7 +81,13 @@ function MyPosts({ history, search }) {
             <Accordion>
               <Card style={{ margin: 10 }} key={post._id}>
                 <Card.Header style={{ display: "flex" }}>
+<span>
 
+  <img style={{width:"60px"}}
+  
+  src={post.pic} alt="BigCo Inc. logo"/>
+  </span>
+  
                 <Accordion
                 style={{
                   color: "black",

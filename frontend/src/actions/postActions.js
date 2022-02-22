@@ -97,7 +97,7 @@ import {
 
 
   
-  export const createPostAction = (title, content) => async (
+  export const createPostAction = (title, content,category,pic) => async (
     dispatch,
     getState
   ) => {
@@ -119,7 +119,7 @@ import {
   
       const { data } = await axios.post(
         `/api/posts/create`,
-        { title, content},
+        { title, content,category,pic},
         config
       );
   
@@ -173,7 +173,7 @@ import {
     }
   };
   
-  export const updatePostAction = (id, title, content) => async (
+  export const updatePostAction = (id, title, content,category,pic) => async (
     dispatch,
     getState
   ) => {
@@ -195,7 +195,7 @@ import {
   
       const { data } = await axios.put(
         `/api/posts/${id}`,
-        { title, content},
+        { title, content,category,pic},
         config
       );
   

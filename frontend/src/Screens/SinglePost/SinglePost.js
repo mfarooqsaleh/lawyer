@@ -8,11 +8,14 @@ import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
 import ReactMarkdown from "react-markdown";
 
-function SinglePost({ match, history }) {
+function SinglePost({ match, history,location }) {
   const [title, setTitle] = useState();
   const [content, setContent] = useState();
   const [category, setCategory] = useState();
   const [date, setDate] = useState("");
+  const [pic, setPic] = useState();
+  const [picMessage, setPicMessage] = useState();
+
 
   const dispatch = useDispatch();
 
@@ -36,11 +39,38 @@ function SinglePost({ match, history }) {
       setTitle(data.title);
       setContent(data.content);
       setCategory(data.category);
+      setPic(data.pic);
+
       setDate(data.updatedAt);
     };
 
     fetching();
   }, [match.params.id, date]);
+
+  const postDetails = (pics) => {
+    setPicMessage(null);
+    if (pics.type === "image/jpeg" || pics.type === "image/png") {
+      const data = new FormData();
+      data.append("file", pics);
+      data.append("upload_preset", "smartt");
+      data.append("cloud_name", "smartleading");
+      fetch("https://api.cloudinary.com/v1_1/smartleading/image/upload", {
+        method: "post",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setPic(data.url.toString());
+          console.log(pic);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      return setPicMessage("Please Select an Image");
+    }
+  };
+
 
   const resetHandler = () => {
     setTitle("");
@@ -50,7 +80,7 @@ function SinglePost({ match, history }) {
 
   const updateHandler = (e) => {
     e.preventDefault();
-    dispatch(updatePostAction(match.params.id, title, content, category));
+    dispatch(updatePostAction(match.params.id, title, content, category,pic));
     if (!title || !content || !category) return;
 
     resetHandler();
@@ -106,6 +136,19 @@ function SinglePost({ match, history }) {
                 onChange={(e) => setCategory(e.target.value)}
               />
             </Form.Group>
+            {picMessage && (
+                <ErrorMessage variant="danger">{picMessage}</ErrorMessage>
+              )}
+            <Form.Group controlId="pic">
+              <Form.Label>Change Profile Picture</Form.Label>
+                <input
+                 onChange={(e) => postDetails(e.target.files[0])}
+                  id="custom-file"
+                  type="file"
+                  label="Upload Profile Picture"
+                  custom
+                />
+</Form.Group>
             {loading && <Loading size={50} />}
             <Button variant="primary" type="submit">
               Update Post

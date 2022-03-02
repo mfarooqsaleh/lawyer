@@ -8,10 +8,15 @@ import CreatePost from "./Screens/SinglePost/CreatePost";
 
 import LandingPage from "./Screens/LandingPage/LandingPage";
 import LoginScreen from "./Screens/LoginScreen/LoginScreen";
+
 import RegisterScreen from "./Screens/RegisterScreen/RegisterScreen";
+import LawyerRegisterScreen from "./Screens/RegisterScreen/LawyerRegisterScreen";
+
 import { useState } from "react";
 import ProfileScreen from "./Screens/ProfileScreen/ProfileScreen";
 import FeedScreen from "./Screens/FeedScreen/FeedScreen";
+import CommentFeed from "./Screens/FeedScreen/CommentFeed";
+
 
 
 
@@ -24,7 +29,9 @@ function App() {
       <main className="App">
         <Route path="/" component={LandingPage} exact />
         <Route path="/login" component={LoginScreen} />
+
         <Route path="/register" component={RegisterScreen} />
+        <Route path="/lawyerregister" component={LawyerRegisterScreen} />
         <Route
           path="/myposts"
           component={({ history }) => (
@@ -35,6 +42,8 @@ function App() {
         <Route path="/createpost" component={CreatePost} />
         <Route path="/profile" component={ProfileScreen} />
         <Route path="/feeds" component={FeedScreen} />
+        <Route path="/comment" component={CommentFeed} />
+
 
 
 

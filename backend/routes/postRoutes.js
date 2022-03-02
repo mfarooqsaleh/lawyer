@@ -3,7 +3,6 @@ import {
   getPostById,
   getPosts,
   getAllPosts,
-
   CreatePost,
   DeletePost,
   UpdatePost,
@@ -21,6 +20,7 @@ router
   .delete(protect, DeletePost)
   .put(protect, UpdatePost);
 router.route("/create").post(protect, CreatePost);
+
 
 
 

@@ -1,4 +1,5 @@
 import Post from "../models/postModel.js";
+
 import asyncHandler from "express-async-handler";
 
 // @desc    Get logged in user posts
@@ -48,6 +49,11 @@ const CreatePost = asyncHandler(async (req, res) => {
   }
 });
 
+
+
+
+
+
 //@description     Delete single Post
 //@route           GET /api/posts/:id
 //@access          Private
@@ -95,4 +101,4 @@ const UpdatePost = asyncHandler(async (req, res) => {
   }
 });
 
-export { getPostById, getPosts,getAllPosts, CreatePost, DeletePost,UpdatePost };
+export { getPostById,getPosts,getAllPosts, CreatePost, DeletePost,UpdatePost };

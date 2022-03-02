@@ -57,7 +57,7 @@ function RegisterScreen({ history }) {
 
   useEffect(() => {
     if (userInfo) {
-      history.push("/");
+      history.push("/myposts");
     }
   }, [history, userInfo]);
 
@@ -96,22 +96,17 @@ function RegisterScreen({ history }) {
             />
           </Form.Group>
 
+          <Form.Group controlId="name">
+            <Form.Label>Role</Form.Label>
+            <Form.Control
+              type="name"
+              defaultValue="lawyer"
+              placeholder="role"
+              onChange={(e) => setRole(e.target.value)}
+            />
+          </Form.Group>
 
-          <Form.Control
-          as="select"
-          custom
-          onChange={(e) => {
-            const selectRole=e.target.value;
-            setRole(selectRole)
-          
-          
-          } }    >
-             <option value="">Please Select Role</option>
-          <option value="client">Client</option>
-          <option value="lawyer">Lawyer</option>
-          
-        </Form.Control>
-
+        
        
           <Form.Group controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>

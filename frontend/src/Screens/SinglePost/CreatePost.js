@@ -127,6 +127,7 @@ function CreatePost({ location,history }) {
 onChange={(e) => postDetails(e.target.files[0])}
 id="custom-file"
 type="file"
+multiple
 label="Upload Post Picture"
 custom
 

@@ -1,15 +1,18 @@
 import React, { useEffect } from "react";
-import { Accordion, Badge, Button, Card,CardImg } from "react-bootstrap";
 import MainScreen from "../../components/MainScreen";
+import { Form, Button, Row, Col,Card } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
-import { register } from "../../actions/userActions";
+import { login } from "../../actions/userActions";
+
 
 import { useDispatch, useSelector } from "react-redux";
 import {  listFeeds } from "../../actions/postActions";
+import CommentFeed from "./CommentFeed";
+
 import Loading from "../../components/Loading";
 import ErrorMessage from "../../components/ErrorMessage";
-//import "./MyPosts.css";
 
 function MyFeeds({ history, search }) {
   const dispatch = useDispatch();
@@ -58,6 +61,14 @@ function MyFeeds({ history, search }) {
     <Card.Text>
     {post.content}
     </Card.Text>
+    <div>
+    
+    
+    </div>
+    {userInfo.role==="lawyer"  &&  (
+    <CommentFeed/>
+    )}
+
   </Card.Body>
 </Card>
 

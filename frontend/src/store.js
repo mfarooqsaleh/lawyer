@@ -9,6 +9,12 @@ import {
     
     
   } from "./reducers/userReducer";
+
+ 
+
+
+
+
   import {
     postCreateReducer,
     postDeleteReducer,
@@ -17,10 +23,17 @@ import {
     postUpdateReducer,
   } from "./reducers/postReducer";
 
+  import {
+   
+    commentListReducer,
+  } from "./reducers/commentReducer";
+
+
 const reducer=combineReducers({
 
 postList: postListReducer,
 feedList:feedListReducer,
+commentList:commentListReducer,
   
   postCreate: postCreateReducer,
   postDelete: postDeleteReducer,
@@ -29,6 +42,9 @@ feedList:feedListReducer,
     userLogin: userLoginReducer,
     userRegister: userRegisterReducer,
     userUpdate:userUpdateReducer,
+
+   
+
 })
 
 const userInfoFromStorage = localStorage.getItem("userInfo")
@@ -38,6 +54,7 @@ const userInfoFromStorage = localStorage.getItem("userInfo")
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
 };
+
 
 const middleware = [thunk];
 

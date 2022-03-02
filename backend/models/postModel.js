@@ -26,12 +26,23 @@ const noteSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+
+    comment:[{
+      content:String,
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+
+}]
+    
+   
   },
   {
     timestamps: true,
   }
 );
 
-const Note = mongoose.model("Post", noteSchema);
+const Post = mongoose.model("Post", noteSchema);
 
-export default Note;
+export default Post;

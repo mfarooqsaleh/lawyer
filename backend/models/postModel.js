@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
+const {ObjectId} = mongoose.Schema.Types
 
-const noteSchema = mongoose.Schema(
+
+const postSchema = mongoose.Schema(
   {
     title: {
       type: String,
@@ -21,21 +23,20 @@ const noteSchema = mongoose.Schema(
       default:
         "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
+   
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
+      required: false,
       ref: "User",
     },
-
-    comment:[{
-      content:String,
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-
-}]
-    
+    comments:[{
+      text:String,
+      postedBy:{type:mongoose.Types.ObjectId,ref:"User"}
+  }],
+  postedBy:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"User"
+ }
    
   },
   {
@@ -43,6 +44,6 @@ const noteSchema = mongoose.Schema(
   }
 );
 
-const Post = mongoose.model("Post", noteSchema);
+const Post = mongoose.model("Post", postSchema);
 
 export default Post;

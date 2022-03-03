@@ -14,76 +14,112 @@ import ErrorMessage from "../../components/ErrorMessage";
 //import "./MyPosts.css";
 
 function MyComments({history}) {
+  const [data,setData] = useState([])
   const dispatch = useDispatch();
-  const [text, setText] = useState("");
-
-
-
-
-
-
-
-  const commentList = useSelector((state) => state.commentList);
-  const { comment } = commentList;
-
-
-  
-
 
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
   
   
-  useEffect(() => {
-    dispatch(listComment());
-    if (!userInfo) {
-      history.push("/");
+  
+
+
+    const likePost = (id)=>{
+          fetch('/like',{
+              method:"put",
+              headers:{
+                  "Content-Type":"application/json",
+                  "Authorization":"Bearer "+localStorage.getItem("jwt")
+              },
+              body:JSON.stringify({
+                  postId:id
+              })
+          }).then(res=>res.json())
+          .then(result=>{
+                   //   console.log(result)
+            const newData = data.map(item=>{
+                if(item._id==result._id){
+                    return result
+                }else{
+                    return item
+                }
+            })
+            setData(newData)
+          }).catch(err=>{
+              console.log(err)
+          })
     }
-  }, [
-    dispatch,
-    history,
-    userInfo,
-  
-  ]);
-  
+    const unlikePost = (id)=>{
+          fetch('/unlike',{
+              method:"put",
+              headers:{
+                  "Content-Type":"application/json",
+                  "Authorization":"Bearer "+localStorage.getItem("jwt")
+              },
+              body:JSON.stringify({
+                  postId:id
+              })
+          }).then(res=>res.json())
+          .then(result=>{
+            //   console.log(result)
+            const newData = data.map(item=>{
+                if(item._id==result._id){
+                    return result
+                }else{
+                    return item
+                }
+            })
+            setData(newData)
+          }).catch(err=>{
+            console.log(err)
+        })
+    }
+
+    const makeComment = (text,postId)=>{
+          fetch('/api/posts/comment',{
+              method:"put",
+              headers:{
+                "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+              },
+              body:JSON.stringify({
+                  postId,
+                  text
+              })
+          }).then(res=>res.json())
+          .then(result=>{
+              console.log(result)
+              const newData = data.map(item=>{
+                if(item._id==result._id){
+                    return result
+                }else{
+                    return item
+                }
+             })
+            setData(newData)
+          }).catch(err=>{
+              console.log(err)
+          })
+    }
+
+   return (
+      <div>
 
 
-  // const filteredposts = posts.filter((post) =>
-  //   post.title.toLowerCase().includes(search.toLowerCase())
-  // );
+                                  
+                                <form onSubmit={(e)=>{
+                                    e.preventDefault()
+                                    console.log(e.target)
+                                    makeComment(e.target[0].value)
+                                }}>
+                                  <input type="text" placeholder="add a comment" />  
+                                </form>
+                                
 
-  
-  const submitHandler = (e) => { 
-    console.log(e.target.value)
-    e.preventDefault();
-    dispatch(createCommentAction(text));
-    if ( !text ) return;
-  }
-  
-
-  return (
-
-    <div>
-<Form onSubmit={submitHandler} >
-
-          
-         <input
-                type="title"
-                value={text}
-                placeholder="Enter the title"
-              onChange={(e) => setText(e.target.value)}
-              />
            
-            
-            <Button type="submit" variant="primary">
-              Enter Comment
-            </Button>
-</Form>
-
-
-      </div>
-     
-);}
-  
+          
+       </div>
+   )
+                              }
 export default MyComments;

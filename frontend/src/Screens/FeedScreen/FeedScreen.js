@@ -195,9 +195,7 @@ function getComments(){
 
  )}
 
-    <h6 key={record._id}><span style={{fontWeight:"900"}}>{record.postedBy.name}</span><img style={{width:"60px"}}
-  
-  src={record.postedBy.pic}/>{record.text}</h6>
+    <h6 key={record._id}><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
     { record.postedBy._id === userInfo._id && (
       <span>
 

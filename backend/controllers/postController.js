@@ -74,6 +74,25 @@ const DeletePost = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteComment = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+
+  if (post.user.toString() !== req.user._id.toString()) {
+    res.status(401);
+    throw new Error("You can't perform this action");
+  }
+
+  if (post) {
+    await post.remove();
+    res.json({ message: "Post Removed" });
+  } else {
+    res.status(404);
+    throw new Error("Post not Found");
+  }
+});
+
+
+
 // @desc    Update a post
 // @route   PUT /api/potes/:id
 // @access  Private
@@ -101,4 +120,6 @@ const UpdatePost = asyncHandler(async (req, res) => {
   }
 });
 
-export { getPostById,getPosts,getAllPosts, CreatePost, DeletePost,UpdatePost };
+
+
+export { getPostById,getPosts,getAllPosts, CreatePost, DeletePost,UpdatePost,deleteComment, };

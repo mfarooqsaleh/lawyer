@@ -29,9 +29,17 @@ const postSchema = mongoose.Schema(
       required: false,
       ref: "User",
     },
+
+    
     comments:[{
       text:String,
-      postedBy:{type:mongoose.Types.ObjectId,ref:"User"}
+      postedBy:{type:mongoose.Types.ObjectId,ref:"User"},
+      pic: {
+        type: String,
+        required: false,
+      }
+
+     
   }],
   postedBy:{
     type: mongoose.Schema.Types.ObjectId,

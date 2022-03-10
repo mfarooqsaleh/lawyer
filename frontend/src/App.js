@@ -1,6 +1,8 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Footer from "./components/Footer";
+import React, { Component }  from 'react';
+
 import Header from "./components/Header";
 import MyPosts from "./Screens/MyPosts/MyPosts";
 import SinglePost from "./Screens/SinglePost/SinglePost";

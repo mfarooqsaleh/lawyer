@@ -14,12 +14,18 @@ const commentSchema = mongoose.Schema(
       required: false,
       ref: "Post",
     },
-    content: {
+    text: {
       type: String,
       required: true,
     },
- 
-
+    comments:[{
+      text:String,
+      postedBy:{type:mongoose.Types.ObjectId,ref:"User"}
+  }],
+    postedBy:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"User"
+   }
   }, 
   
   {

@@ -216,20 +216,7 @@ function getComments(){
   }}>
         <input type="text" placeholder="add a comment" />  
 
-        <input
-
-onChange={(e) => postDetails(e.target.files[0])}
-id="custom-file"
-type="file"
-multiple
-label="Upload Post Picture"
-custom
-
-/>    
-   
-    
-    <button type="submit">Submitt</button>
-    
+       
   </form>
   
 

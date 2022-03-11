@@ -15,7 +15,8 @@ function MyFeeds({ history, search }) {
   const [data,setData] = useState([])
   const [isEditing, setEditing] = useState(false);
   const [ucomment, setucomment] = useState("");
-
+  const [todoEditing, setTodoEditing] = useState(null);
+  const [editingText, setEditingText] = useState("");
 const feedList = useSelector((state) => state.feedList);
 const [pic, setPic] = useState(
   "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
@@ -55,12 +56,14 @@ const [pic, setPic] = useState(
 
 
 
- function editHandler(){
-setEditing(true);
-}
-function notEditing(){
-  setEditing(false);
+ function editHandler(id){
+ 
+    setEditing(true)
+  
   }
+function notEditing(){
+  setTodoEditing(null)
+}
 function getComments(){
   fetch('api/posts/allpost',{
     headers:{
@@ -114,7 +117,7 @@ function getComments(){
     }).then((result) => {
       result.json().then((resp) => {
         getComments()
-        notEditing()
+        setTodoEditing(null)
       })
     })
   }
@@ -169,7 +172,7 @@ function getComments(){
    
     <div>
     {
-      post.comments.map(record=>{
+      post.comments.map((record,index)=>{
 
     
        
@@ -178,35 +181,48 @@ function getComments(){
 
       return(
         
-      <div>
- {isEditing && (
-        <div>  <form
+      <div key={record._id}>
+ {record._id === todoEditing ? (
+        <div> 
+          <form
           onSubmit={(e)=>{
             e.preventDefault()
             updateComments(e.target[0].value,post._id,record._id);
             e.target.reset();
-          }}> <input type="text" placeholder="" defaultValue={record.text}/>  
-          
-          </form>
+          }}> 
 
+{ record.postedBy._id === userInfo._id && (
+           <input
+           type="text"
+           onChange={(e) => setEditingText(e.target.value)}
+         />)}
+          </form>
        <div>
        </div>
-   <button onClick={()=>{notEditing()}}>cancel</button></div>
+       { record.postedBy._id === userInfo._id && (
+   <button onClick={()=>{notEditing()}}>cancel</button>
+       )}
+   </div>
+ ) : (
+<div>
+  <h6 key={record._id}><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
+  { record.postedBy._id === userInfo._id && (
+    <span>
+    <button onClick={()=>deletePost(post._id,record._id)}>delete</button>
+    <button  onClick={() => setTodoEditing(record._id)}>Edit</button>
+  
+    </span>  )}  
 
+  </div>
  )}
 
-    <h6 key={record._id}><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
-    { record.postedBy._id === userInfo._id && (
-      <span>
+ 
 
-      <button onClick={()=>deletePost(post._id,record._id)}>delete</button>
-      <button onClick={editHandler}>Edit</button>
-      </span>  
-      )}
+   
+ 
     
 </div>
 )})}
-  
 
    {userInfo.role=="lawyer"  &&  (
      <form onSubmit={(e)=>{
@@ -215,7 +231,16 @@ function getComments(){
       e.target.reset();
   }}>
         <input type="text" placeholder="add a comment" />  
+        <input
 
+onChange={(e) => postDetails(e.target.files[0])}
+id="custom-file"
+type="file"
+multiple
+label="Upload Post Picture"
+custom
+
+/>    
        
   </form>
   

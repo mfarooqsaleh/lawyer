@@ -156,7 +156,6 @@ useEffect(()=>{
   }
   return (
     <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
-            {console.log('data',data)}
       {data &&
         data
           .reverse()

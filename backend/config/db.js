@@ -19,11 +19,3 @@ const connectDB = async () => {
 
 
 
-*/
-MONGO_URI=mongodb+srv://farooq_123:farooq_123@cluster0.zg5bb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-PORT=5000
-NODE_ENV =local
-JWT_SECRET=ameer12
-
-
-*/

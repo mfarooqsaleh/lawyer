@@ -1,18 +1,17 @@
 import React, { useEffect,useState } from "react";
 import MainScreen from "../../components/MainScreen";
 import { Form, Button, Row, Col,Card } from "react-bootstrap";
-import Loading from "../../components/Loading";
-import ErrorMessage from "../../components/ErrorMessage";
 
+import { deletePostAction, listPosts } from "../../actions/postActions";
 
 import { useDispatch, useSelector } from "react-redux";
-import req from "express/lib/request";
 
 
 
 function MyFeeds({ history, search }) {
   const dispatch = useDispatch();
   const [data,setData] = useState([])
+  
   const [isEditing, setEditing] = useState(false);
   const [ucomment, setucomment] = useState("");
   const [todoEditing, setTodoEditing] = useState(null);
@@ -28,6 +27,19 @@ const [pic, setPic] = useState(
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
+
+
+  useEffect(() => {
+    dispatch(listPosts());
+    if (!userInfo) {
+      history.push("/");
+    }
+  }, [
+    dispatch,
+    history,
+    userInfo,
+  
+  ]);
 
   const postDetails = (pics) => {
     if (
@@ -53,9 +65,6 @@ const [pic, setPic] = useState(
     } else {
     }
   };
-
-
-
  function editHandler(id){
  
     setEditing(true)
@@ -75,10 +84,8 @@ function getComments(){
     console.log(result)
     setData(result.posts)
 })
-
 }
-
-  useEffect(()=>{
+useEffect(()=>{
    getComments();
  },[])
  
@@ -149,12 +156,7 @@ function getComments(){
   }
   return (
     <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
-           
-          
-     
-      {console.log('data',data)}
-
-     
+            {console.log('data',data)}
       {data &&
         data
           .reverse()
@@ -173,13 +175,7 @@ function getComments(){
     <div>
     {
       post.comments.map((record,index)=>{
-
-    
-       
-                 
-       
-
-      return(
+         return(
         
       <div key={record._id}>
  {record._id === todoEditing ? (
@@ -205,7 +201,7 @@ function getComments(){
    </div>
  ) : (
 <div>
-  <h6 key={record._id}><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
+  <h6><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
   { record.postedBy._id === userInfo._id && (
     <span>
     <button onClick={()=>deletePost(post._id,record._id)}>delete</button>
@@ -215,15 +211,8 @@ function getComments(){
 
   </div>
  )}
-
- 
-
-   
- 
-    
 </div>
 )})}
-
    {userInfo.role=="lawyer"  &&  (
      <form onSubmit={(e)=>{
       e.preventDefault()
@@ -231,6 +220,15 @@ function getComments(){
       e.target.reset();
   }}>
         <input type="text" placeholder="add a comment" />  
+       
+  </form>
+ )}              
+  {userInfo.role=="lawyer"  &&  (
+     <form onSubmit={(e)=>{
+      e.preventDefault()
+      makeComment(e.target[0].value,post._id);
+      e.target.reset();
+  }}>
         <input
 
 onChange={(e) => postDetails(e.target.files[0])}
@@ -241,27 +239,15 @@ label="Upload Post Picture"
 custom
 
 />    
-       
+       <button type="submit">Send</button>
   </form>
-  
-
-  
- )}                
-    </div>
-    
-
-    
+  )}               
+    </div>  
   </Card.Body>
 </Card>
-
-
-  </div>
-          ))}     
-
-
-
-    </MainScreen>
+ </div>
+))}     
+   </MainScreen>
   );
 }
-
 export default MyFeeds;

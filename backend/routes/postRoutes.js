@@ -47,6 +47,7 @@ router.delete("/comments/:postId/:commentId", async function (req, res) {
 
 router.get('/allpost',protect,(req,res)=>{
   Post.find()
+  .sort({datefield: -1})
   .populate("comments.postedBy","name _id ")
   .populate("postedBy"," name _id ")
 

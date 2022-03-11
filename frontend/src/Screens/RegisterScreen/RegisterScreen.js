@@ -97,20 +97,6 @@ function RegisterScreen({ history }) {
           </Form.Group>
 
 
-          <Form.Control
-          as="select"
-          custom
-          onChange={(e) => {
-            const selectRole=e.target.value;
-            setRole(selectRole)
-          
-          
-          } }    >
-             <option value="">Please Select Role</option>
-          <option value="client">Client</option>
-          <option value="lawyer">Lawyer</option>
-          
-        </Form.Control>
 
        
           <Form.Group controlId="formBasicPassword">

@@ -11,7 +11,7 @@ import "./RegisterScreen.css";
 function RegisterScreen({ history }) {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("lawyer");
 
   const [pic, setPic] = useState(
     "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
@@ -99,11 +99,12 @@ function RegisterScreen({ history }) {
           <Form.Group controlId="name">
             <Form.Label>Role</Form.Label>
             <Form.Control
-              type="name"
-              defaultValue="lawyer"
+              type="text"
+              value="lawyer"
+              readonly="readonly"
               placeholder="role"
-              onChange={(e) => setRole(e.target.value)}
             />
+
           </Form.Group>
 
         

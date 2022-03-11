@@ -4,7 +4,6 @@ import connectDB from "./config/db.js";
 import path from "path";
   import userRoutes from "./routes/userRoutes.js";
   import postRoutes from "./routes/postRoutes.js";
-  import commentRoutes from "./routes/commentRoutes.js";
 
 
 
@@ -17,7 +16,6 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 
 app.use("/api/posts", postRoutes);
-app.use("/api", commentRoutes);
 
 
 

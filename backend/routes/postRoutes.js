@@ -48,8 +48,8 @@ router.delete("/comments/:postId/:commentId", async function (req, res) {
 router.get('/allpost',protect,(req,res)=>{
   Post.find()
   .sort({datefield: -1})
-  .populate("comments.postedBy","name _id ")
-  .populate("postedBy"," name _id ")
+  .populate("comments.postedBy","name _id email")
+  .populate("postedBy"," name _id email")
 
   .sort('-createdAt')
   .then((posts)=>{
@@ -71,14 +71,18 @@ router.put('/comment',protect,(req,res)=>{
       pic:req.body.pic,
 
       postedBy:req.user._id
+
   }
   Post.findByIdAndUpdate(req.body.postId,{
       $push:{comments:comment}
   },{
       new:true
   })
-  .populate("comments.postedBy","name _id pic ")
-  .populate("postedBy"," name _id ")
+  .populate("comments.postedBy","email name _id pic ")
+  .populate("postedBy","email name _id")
+  .populate("user")
+
+
 
 
   .exec((err,result)=>{

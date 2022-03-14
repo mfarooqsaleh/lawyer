@@ -128,7 +128,7 @@ useEffect(()=>{
       })
     })
   }
-  const makeComment = (text,postId,pic)=>{
+  const makeComment = (text,postId,pic,email)=>{
     fetch('/api/posts/comment',{
         method:"put",
         headers:{
@@ -186,7 +186,7 @@ useEffect(()=>{
             e.target.reset();
           }}> 
 
-{ record.postedBy._id === userInfo._id && (
+{ userInfo && userInfo.email ===record.postedBy.email && (
            <input
            type="text"
            onChange={(e) => setEditingText(e.target.value)}
@@ -194,25 +194,28 @@ useEffect(()=>{
           </form>
        <div>
        </div>
-       { record.postedBy._id === userInfo._id && (
+       { userInfo && userInfo.email ===record.postedBy.email && (
    <button onClick={()=>{notEditing()}}>cancel</button>
        )}
    </div>
+
  ) : (
 <div>
-  <h6><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
-  { record.postedBy._id === userInfo._id && (
+  <h6><span style={{fontWeight:"900"}}>{record.postedBy.email}</span>{record.text}</h6>
+  { userInfo && userInfo.email ===record.postedBy.email  && (
     <span>
     <button onClick={()=>deletePost(post._id,record._id)}>delete</button>
     <button  onClick={() => setTodoEditing(record._id)}>Edit</button>
   
     </span>  )}  
 
+    
+
   </div>
  )}
 </div>
 )})}
-   {userInfo.role=="lawyer"  &&  (
+   {userInfo && userInfo.role=="lawyer"  &&  (
      <form onSubmit={(e)=>{
       e.preventDefault()
       makeComment(e.target[0].value,post._id);
@@ -222,7 +225,7 @@ useEffect(()=>{
        
   </form>
  )}              
-  {userInfo.role=="lawyer"  &&  (
+  {userInfo && userInfo.role=="lawyer"  &&  (
      <form onSubmit={(e)=>{
       e.preventDefault()
       makeComment(e.target[0].value,post._id);
@@ -246,6 +249,9 @@ custom
 </Card>
  </div>
 ))}     
+
+{console.log(userInfo && userInfo.email)}
+
    </MainScreen>
   );
 }

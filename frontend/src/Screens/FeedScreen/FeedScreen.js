@@ -200,7 +200,7 @@ useEffect(()=>{
 
  ) : (
 <div>
-  <h6><span style={{fontWeight:"900"}}>{record.postedBy.email}</span>{record.text}</h6>
+  <h6><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
   { userInfo && userInfo.email ===record.postedBy.email  && (
     <span>
     <button onClick={()=>deletePost(post._id,record._id)}>delete</button>

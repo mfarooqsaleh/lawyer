@@ -158,12 +158,11 @@ useEffect(()=>{
     <MainScreen title={`Welcome Back ${userInfo && userInfo.name}..`}>
       {data &&
         data
-          .reverse()
           .map((post) => (
             <div>
 <Card style={{ width: '18rem' }}>
   
-<Card.Img variant="top" src={} />
+<Card.Img variant="top" src={post.pic} />
   <Card.Body>
     <Card.Title>{post.title}</Card.Title>
     <Card.Text>

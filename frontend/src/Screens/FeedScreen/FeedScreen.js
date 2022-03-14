@@ -163,7 +163,7 @@ useEffect(()=>{
             <div>
 <Card style={{ width: '18rem' }}>
   
-<Card.Img variant="top" src={post.pic} />
+<Card.Img variant="top" src={} />
   <Card.Body>
     <Card.Title>{post.title}</Card.Title>
     <Card.Text>

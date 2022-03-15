@@ -140,7 +140,7 @@ function RegisterScreen({ history }) {
 id="custom-file"
 type="file"
 label="Upload Profile Picture"
-custom
+custom="true"
 
 />          
 </Form.Group>

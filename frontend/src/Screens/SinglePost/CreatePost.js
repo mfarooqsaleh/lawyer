@@ -129,7 +129,7 @@ id="custom-file"
 type="file"
 multiple
 label="Upload Post Picture"
-custom
+custom="true"
 
 />          
 </Form.Group>

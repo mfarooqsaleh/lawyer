@@ -121,8 +121,8 @@ const ProfileScreen = ({ location, history }) => {
                  onChange={(e) => postDetails(e.target.files[0])}
                   id="custom-file"
                   type="file"
-                  label="Upload Profile Picture"
-                  custom
+                  label="Upload Prtrueofile Picture"
+                  custom="true"
                 />
 </Form.Group>
               <Button type="submit" varient="primary">

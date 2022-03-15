@@ -78,7 +78,7 @@ router.put('/comment',protect,(req,res)=>{
   },{
       new:true
   })
-  .populate("comments.postedBy","email name _id pic ")
+  .populate("comments.postedBy","email name _id")
   .populate("postedBy","email name _id")
   .populate("user")
 

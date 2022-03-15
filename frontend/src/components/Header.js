@@ -32,7 +32,7 @@ function Header({ setSearch }) {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="m-auto">
             {userInfo && (
-              <Form inline>
+              <Form inline="true">
                 <FormControl
                   type="text"
                   placeholder="Search"

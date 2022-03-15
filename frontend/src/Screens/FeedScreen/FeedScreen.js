@@ -42,14 +42,10 @@ const [pic, setPic] = useState(
   ]);
 
   const postDetails = (pics) => {
-    if (
-      pics ===
-      "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
-    ) 
     if (pics.type === "image/jpeg" || pics.type === "image/png") {
-      const data = new FormData(); 
+      const data = new FormData();
       data.append("file", pics);
-      data.append("upload_preset", "smartleading");
+      data.append("upload_preset", "smartt");
       data.append("cloud_name", "smartleading");
       fetch("https://api.cloudinary.com/v1_1/smartleading/image/upload", {
         method: "post",
@@ -58,13 +54,16 @@ const [pic, setPic] = useState(
         .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
+          console.log(pic);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
+      return "Please Select an Image"
     }
   };
+
  function editHandler(id){
  
     setEditing(true)
@@ -128,7 +127,7 @@ useEffect(()=>{
       })
     })
   }
-  const makeComment = (text,postId,pic,email)=>{
+  const makeComment = (text,postId,pic)=>{
     fetch('/api/posts/comment',{
         method:"put",
         headers:{
@@ -160,7 +159,7 @@ useEffect(()=>{
         data
           .map((post) => (
             <div>
-<Card style={{ width: '18rem' }}>
+<Card style={{ width: '18rem' }} >
   
 <Card.Img variant="top" src={post.pic} />
   <Card.Body>
@@ -200,7 +199,18 @@ useEffect(()=>{
 
  ) : (
 <div>
-  <h6><span style={{fontWeight:"900"}}>{record.postedBy.name}</span>{record.text}</h6>
+  <h6><span style={{fontWeight:"900"}}>{record.postedBy.name}</span><span>
+    {
+      record.text==="" &&(
+      <img 
+      onClick={()=> window.open(record.pic, "_blank")}
+      style={{width:"60px"}} src={record.pic} />
+      )
+    }
+    
+    
+    
+    </span>{record.text}</h6>
   { userInfo && userInfo.email ===record.postedBy.email  && (
     <span>
     <button onClick={()=>deletePost(post._id,record._id)}>delete</button>
@@ -217,32 +227,27 @@ useEffect(()=>{
    {userInfo && userInfo.role=="lawyer"  &&  (
      <form onSubmit={(e)=>{
       e.preventDefault()
-      makeComment(e.target[0].value,post._id);
+      makeComment(e.target[0].value,post._id,pic);
       e.target.reset();
   }}>
         <input type="text" placeholder="add a comment" />  
        
+        <Form.Group controlId="pic">
+              <Form.Label>Change Profile Picture</Form.Label>
+                <input
+                 onChange={(e) => postDetails(e.target.files[0])}
+                  id="custom-file"
+                  type="file"
+                  label="Upload Prtrueofile Picture"
+                  custom="true"
+                />
+</Form.Group>
+
+       
+        <button type="submit">Send</button>
   </form>
  )}              
-  {userInfo && userInfo.role=="lawyer"  &&  (
-     <form onSubmit={(e)=>{
-      e.preventDefault()
-      makeComment(e.target[0].value,post._id);
-      e.target.reset();
-  }}>
-        <input
-
-onChange={(e) => postDetails(e.target.files[0])}
-id="custom-file"
-type="file"
-multiple
-label="Upload Post Picture"
-custom
-
-/>    
-       <button type="submit">Send</button>
-  </form>
-  )}               
+     
     </div>  
   </Card.Body>
 </Card>

@@ -146,7 +146,7 @@ function SinglePost({ match, history,location }) {
                   id="custom-file"
                   type="file"
                   label="Upload Profile Picture"
-                  custom
+                  custom="true"
                 />
 </Form.Group>
             {loading && <Loading size={50} />}
